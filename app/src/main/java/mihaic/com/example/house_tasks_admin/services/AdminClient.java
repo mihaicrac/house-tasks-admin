@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.ui.register.User;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -16,10 +17,10 @@ import retrofit2.http.PartMap;
 @Singleton
 public interface AdminClient {
     @POST("users")
-    Call<User> registerUser(@Body UserRequest userRequest);
+    Single<User> registerUser(@Body UserRequest userRequest);
 
     @Multipart
     @POST("oauth/token")
-    Call<Token> loginUser(@Header("Authorization") String header, @PartMap Map<String, RequestBody> parameters);
+    Single<Token> loginUser(@Header("Authorization") String header, @PartMap Map<String, RequestBody> parameters);
 
 }

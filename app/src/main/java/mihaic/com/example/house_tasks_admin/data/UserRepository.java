@@ -1,16 +1,16 @@
 package mihaic.com.example.house_tasks_admin.data;
 
-import android.os.AsyncTask;
-
-import java.io.IOException;
 import java.util.function.Consumer;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import mihaic.com.example.house_tasks_admin.data.model.LoggedInUser;
 import mihaic.com.example.house_tasks_admin.services.AdminService;
 import mihaic.com.example.house_tasks_admin.services.LoginRequest;
 import mihaic.com.example.house_tasks_admin.services.Token;
 import mihaic.com.example.house_tasks_admin.services.UserRequest;
-import mihaic.com.example.house_tasks_admin.ui.register.User;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -63,78 +63,32 @@ public class UserRepository {
         tokenPersister.save(new Token());
     }
 
-    public void login(String username, String password, Consumer<Result> callback) {
+    public Disposable login(String username, String password, Consumer<Result> callback) {
         // handle login
-        new LoginTask(username, password, callback).execute();
+        Disposable disposable = dataSource.loginUser(new LoginRequest(username, password))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            saveToken(result);
+                            callback.accept(new Result.Success(result));
+                        }
+                );
+        return disposable;
     }
 
-    public void register(UserRequest userRequest, Consumer<Result> callback) {
-        new RegisterTask(userRequest, callback).execute();
-
-    }
-
-    class LoginTask extends AsyncTask<Void, Void, Result> {
-        String password;
-        String username;
-        Consumer<Result> callback;
-
-        public LoginTask(String username, String password, Consumer<Result> callback) {
-            this.password = password;
-            this.username = username;
-            this.callback = callback;
-        }
-
-        @Override
-        protected Result doInBackground(Void[] params) {
-            try {
-                Token token = dataSource.loginUser(new LoginRequest(username, password)).execute().body();
-                return new Result.Success(token);
-            } catch (Exception e) {
-                return new Result.Error(e);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Result result) {
-            if (result instanceof Result.Success) {
-                saveToken(((Token) ((Result.Success) result).getData()));
-            }
-            callback.accept(result);
-        }
-    }
-
-    class RegisterTask extends AsyncTask<Void, Void, Result> {
-
-        private UserRequest userRequest;
-        private Consumer<Result> callback;
-        private Token token;
-
-        public RegisterTask(UserRequest userRequest, Consumer<Result> callback) {
-            this.userRequest = userRequest;
-            this.callback = callback;
-        }
-
-        @Override
-        protected Result doInBackground(Void[] params) {
-            try {
-                User user = dataSource.registerUser(userRequest).execute().body();
-
-                LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());
-                token = dataSource.loginUser(loginRequest).execute().body();
-
-                return new Result.Success(user);
-            } catch (IOException e) {
-                return new Result.Error(e);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Result result) {
-            if (token != null) {
-                saveToken(token);
-            }
-            callback.accept(result);
-        }
+    public Disposable register(UserRequest userRequest, Consumer<Result> callback) {
+        LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());
+        Disposable disposable = Observable.merge(dataSource.registerUser(userRequest).toObservable(),
+                dataSource.loginUser(loginRequest).toObservable())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(result -> {
+                    if (result instanceof Token) {
+                        saveToken((Token) result);
+                    } else {
+                        callback.accept(new Result.Success(result));
+                    }
+                });
+        return disposable;
     }
 
 }

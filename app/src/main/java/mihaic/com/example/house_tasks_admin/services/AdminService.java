@@ -5,11 +5,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.ui.register.User;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import retrofit2.Call;
 
 public class AdminService {
 
@@ -26,11 +26,11 @@ public class AdminService {
 
     }
 
-    public Call<User> registerUser(UserRequest userRequest) {
+    public Single<User> registerUser(UserRequest userRequest) {
         return adminClient.registerUser(userRequest);
     }
 
-    public Call<Token> loginUser(LoginRequest loginRequest) {
+    public Single<Token> loginUser(LoginRequest loginRequest) {
         Map<String, RequestBody> parameters = new HashMap<>();
         MediaType type = MediaType.parse("text/plain");
         parameters.put("grant_type", RequestBody.create(type, "password"));
