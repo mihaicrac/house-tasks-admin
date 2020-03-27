@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.services;
+package mihaic.com.example.house_tasks_admin.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

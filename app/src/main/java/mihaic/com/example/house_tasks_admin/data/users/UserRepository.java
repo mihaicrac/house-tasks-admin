@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.data;
+package mihaic.com.example.house_tasks_admin.data.users;
 
 import java.util.function.Consumer;
 
@@ -6,11 +6,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import mihaic.com.example.house_tasks_admin.data.model.LoggedInUser;
-import mihaic.com.example.house_tasks_admin.services.AdminService;
-import mihaic.com.example.house_tasks_admin.services.LoginRequest;
-import mihaic.com.example.house_tasks_admin.services.Token;
-import mihaic.com.example.house_tasks_admin.services.UserRequest;
+import mihaic.com.example.house_tasks_admin.data.Result;
+import mihaic.com.example.house_tasks_admin.data.Token;
+import mihaic.com.example.house_tasks_admin.data.TokenPersister;
+import mihaic.com.example.house_tasks_admin.network.users.LoginRequest;
+import mihaic.com.example.house_tasks_admin.network.users.UserRequest;
+import mihaic.com.example.house_tasks_admin.services.UserService;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -20,21 +21,17 @@ public class UserRepository {
 
     private static volatile UserRepository instance;
 
-    private AdminService dataSource;
+    private UserService dataSource;
     private TokenPersister tokenPersister;
     private Token token;
 
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
-    private LoggedInUser user = null;
-
     // private constructor : singleton access
-    private UserRepository(AdminService dataSource, TokenPersister tokenPersister) {
+    private UserRepository(UserService dataSource, TokenPersister tokenPersister) {
         this.dataSource = dataSource;
         this.tokenPersister = tokenPersister;
     }
 
-    public static UserRepository getInstance(AdminService dataSource, TokenPersister tokenPersister) {
+    public static UserRepository getInstance(UserService dataSource, TokenPersister tokenPersister) {
         if (instance == null) {
             instance = new UserRepository(dataSource, tokenPersister);
         }

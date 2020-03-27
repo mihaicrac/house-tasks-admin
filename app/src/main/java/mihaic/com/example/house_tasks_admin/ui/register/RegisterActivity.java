@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil;
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.Result;
 import mihaic.com.example.house_tasks_admin.data.TokenPersister;
-import mihaic.com.example.house_tasks_admin.data.UserRepository;
+import mihaic.com.example.house_tasks_admin.data.users.UserRepository;
 import mihaic.com.example.house_tasks_admin.databinding.ActivityRegisterBinding;
-import mihaic.com.example.house_tasks_admin.services.DaggerAdminModuleComponent;
-import mihaic.com.example.house_tasks_admin.services.UserRequest;
+import mihaic.com.example.house_tasks_admin.di.DaggerAdminModuleComponent;
+import mihaic.com.example.house_tasks_admin.network.users.UserRequest;
 import mihaic.com.example.house_tasks_admin.ui.admin.AdminActivity;
 
 public class RegisterActivity extends AppCompatActivity {

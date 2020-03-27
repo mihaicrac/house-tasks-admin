@@ -4,30 +4,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Single;
+import mihaic.com.example.house_tasks_admin.data.Token;
+import mihaic.com.example.house_tasks_admin.network.users.LoginRequest;
+import mihaic.com.example.house_tasks_admin.network.users.UserClient;
+import mihaic.com.example.house_tasks_admin.network.users.UserRequest;
 import mihaic.com.example.house_tasks_admin.ui.register.User;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class AdminService {
+@Singleton
+public class UserService {
 
-    private AdminClient adminClient;
+    private UserClient userClient;
 
     private String user = "android-house-tasks-tracker";
     private String password = "test1234";
     private String credentials;
 
     @Inject
-    AdminService(AdminClient adminClient) {
-        this.adminClient = adminClient;
+    UserService(UserClient userClient) {
+        this.userClient = userClient;
         this.credentials = Credentials.basic(user, password);
 
     }
 
     public Single<User> registerUser(UserRequest userRequest) {
-        return adminClient.registerUser(userRequest);
+        return userClient.registerUser(userRequest);
     }
 
     public Single<Token> loginUser(LoginRequest loginRequest) {
@@ -38,7 +44,7 @@ public class AdminService {
         parameters.put("username", RequestBody.create(type, loginRequest.getUsername()));
         parameters.put("password", RequestBody.create(type, loginRequest.getPassword()));
 
-        return adminClient.loginUser(credentials, parameters);
+        return userClient.loginUser(credentials, parameters);
     }
 
 }

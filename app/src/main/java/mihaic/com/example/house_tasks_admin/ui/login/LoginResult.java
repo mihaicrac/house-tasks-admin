@@ -2,7 +2,7 @@ package mihaic.com.example.house_tasks_admin.ui.login;
 
 import androidx.annotation.Nullable;
 
-import mihaic.com.example.house_tasks_admin.services.Token;
+import mihaic.com.example.house_tasks_admin.data.Token;
 
 /**
  * Authentication result : success (user details) or error message.

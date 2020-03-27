@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import mihaic.com.example.house_tasks_admin.data.TokenPersister;
-import mihaic.com.example.house_tasks_admin.data.UserRepository;
-import mihaic.com.example.house_tasks_admin.services.DaggerAdminModuleComponent;
+import mihaic.com.example.house_tasks_admin.data.users.UserRepository;
+import mihaic.com.example.house_tasks_admin.di.DaggerAdminModuleComponent;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

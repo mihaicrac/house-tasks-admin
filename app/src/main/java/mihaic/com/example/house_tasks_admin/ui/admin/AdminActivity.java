@@ -19,8 +19,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.TokenPersister;
-import mihaic.com.example.house_tasks_admin.data.UserRepository;
-import mihaic.com.example.house_tasks_admin.services.DaggerAdminModuleComponent;
+import mihaic.com.example.house_tasks_admin.data.users.UserRepository;
+import mihaic.com.example.house_tasks_admin.di.DaggerAdminModuleComponent;
 import mihaic.com.example.house_tasks_admin.ui.login.LoginActivity;
 
 public class AdminActivity extends AppCompatActivity {

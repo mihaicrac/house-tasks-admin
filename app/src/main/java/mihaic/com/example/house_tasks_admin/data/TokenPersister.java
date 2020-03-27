@@ -3,8 +3,6 @@ package mihaic.com.example.house_tasks_admin.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import mihaic.com.example.house_tasks_admin.services.Token;
-
 public class TokenPersister {
 
     private SharedPreferences sharedPref;
