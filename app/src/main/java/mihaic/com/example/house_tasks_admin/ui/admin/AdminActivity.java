@@ -17,21 +17,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import javax.inject.Inject;
+
+import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
-import mihaic.com.example.house_tasks_admin.data.TokenPersister;
 import mihaic.com.example.house_tasks_admin.data.users.UserRepository;
-import mihaic.com.example.house_tasks_admin.di.DaggerAdminModuleComponent;
 import mihaic.com.example.house_tasks_admin.ui.login.LoginActivity;
 
 public class AdminActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private UserRepository userRepository;
+
+    @Inject
+    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((MyApplication) getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
-        userRepository = UserRepository.getInstance(DaggerAdminModuleComponent.create().adminService(), TokenPersister.getInstance(getApplicationContext()));
+
         setContentView(R.layout.activity_admin);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

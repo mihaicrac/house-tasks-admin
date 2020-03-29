@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.network.users;
+package mihaic.com.example.house_tasks_admin.network.users.dto;
 
 public class LoginRequest {
 

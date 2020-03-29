@@ -1,4 +1,6 @@
-package mihaic.com.example.house_tasks_admin.network.users;
+package mihaic.com.example.house_tasks_admin.network.users.dto;
+
+import mihaic.com.example.house_tasks_admin.databinding.ActivityRegisterBinding;
 
 public class UserRequest {
     private String username;
@@ -52,5 +54,15 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static UserRequest fromActivityRegisterBinding(ActivityRegisterBinding binding){
+        UserRequest request = new UserRequest();
+        request.setEmail(binding.email.getText().toString());
+        request.setFirstName(binding.firstname.getText().toString());
+        request.setLastName(binding.lastname.getText().toString());
+        request.setPassword(binding.password.getText().toString());
+        request.setUsername(binding.username.getText().toString());
+        return request;
     }
 }

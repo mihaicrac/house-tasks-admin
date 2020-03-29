@@ -5,84 +5,76 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 
+import javax.inject.Inject;
+
+import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
+import mihaic.com.example.house_tasks_admin.data.Result;
+import mihaic.com.example.house_tasks_admin.databinding.ActivityLoginBinding;
+import mihaic.com.example.house_tasks_admin.di.LoginComponent;
 import mihaic.com.example.house_tasks_admin.ui.admin.AdminActivity;
 import mihaic.com.example.house_tasks_admin.ui.register.RegisterActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginViewModel loginViewModel;
+    private LoginComponent loginComponent;
+
+    @Inject
+    LoginViewModel loginViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginComponent = ((MyApplication) getApplicationContext()).getAppComponent().loginComponent().create();
+        loginComponent.inject(this);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory(getApplicationContext()))
-                .get(LoginViewModel.class);
+        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         if (loginViewModel.isLoggedId()) {
             startHomeActivity();
             finish();
         }
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final Button registerButton = findViewById(R.id.register);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
-
         loginViewModel.getLoginResult().observe(this, loginResult -> {
-                    if (loginResult == null) {
-                        return;
-                    }
-                    loadingProgressBar.setVisibility(View.GONE);
-                    if (loginResult.getError() != null) {
-                        showLoginFailed(loginResult.getError().getLocalizedMessage());
-                    }
-                    if (loginResult.getSuccess() != null) {
-                        startHomeActivity();
-                    }
-                    setResult(Activity.RESULT_OK);
+            binding.loading.setVisibility(View.GONE);
+            if (loginResult instanceof Result.Error) {
+                showLoginFailed(((Result.Error) loginResult).getError().getLocalizedMessage());
+            } else {
+                startHomeActivity();
+            }
+            setResult(Activity.RESULT_OK);
+            finish();
+        });
 
-                    //Complete and destroy login activity once successful
-                    finish();
-                }
-        );
-
-        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
+        binding.password.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                loginViewModel.login(binding.username.getText().toString(), binding.password.getText().toString());
             }
             return false;
         });
 
-        loginButton.setOnClickListener(v -> {
-                    loadingProgressBar.setVisibility(View.VISIBLE);
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-        );
-        registerButton.setOnClickListener(v -> {
-                    Intent registerIntent = new Intent(getApplicationContext(), RegisterActivity.class);
-                    startActivity(registerIntent);
-                }
-        );
+        binding.login.setOnClickListener(v -> {
+            binding.loading.setVisibility(View.VISIBLE);
+            loginViewModel.login(binding.username.getText().toString(), binding.password.getText().toString());
+        });
+
+        binding.register.setOnClickListener(v -> startRegisterActivity());
     }
 
     private void startHomeActivity() {
         Intent homeIntent = new Intent(getApplicationContext(), AdminActivity.class);
         startActivity(homeIntent);
+    }
+
+    private void startRegisterActivity() {
+        Intent registerIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+        startActivity(registerIntent);
     }
 
     private void showLoginFailed(String errorString) {

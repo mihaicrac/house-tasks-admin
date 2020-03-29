@@ -1,22 +1,20 @@
-package mihaic.com.example.house_tasks_admin.data;
+package mihaic.com.example.house_tasks_admin.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class TokenPersister {
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import mihaic.com.example.house_tasks_admin.data.Token;
+
+@Singleton
+public class TokenStoreService {
     private SharedPreferences sharedPref;
-    private static TokenPersister tokenPersister = null;
 
-    private TokenPersister(Context context) {
+    @Inject
+    public TokenStoreService(Context context) {
         sharedPref = context.getSharedPreferences("data", Context.MODE_PRIVATE);
-    }
-
-    public static TokenPersister getInstance(Context context) {
-        if (tokenPersister == null) {
-            tokenPersister = new TokenPersister(context);
-        }
-        return tokenPersister;
     }
 
     public void save(Token token) {

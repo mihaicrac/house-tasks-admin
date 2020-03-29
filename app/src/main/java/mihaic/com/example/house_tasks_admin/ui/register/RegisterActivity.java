@@ -6,36 +6,30 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import javax.inject.Inject;
 
+import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.Result;
-import mihaic.com.example.house_tasks_admin.data.TokenPersister;
+import mihaic.com.example.house_tasks_admin.network.users.dto.User;
 import mihaic.com.example.house_tasks_admin.data.users.UserRepository;
 import mihaic.com.example.house_tasks_admin.databinding.ActivityRegisterBinding;
-import mihaic.com.example.house_tasks_admin.di.DaggerAdminModuleComponent;
-import mihaic.com.example.house_tasks_admin.network.users.UserRequest;
+import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
 import mihaic.com.example.house_tasks_admin.ui.admin.AdminActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private UserRepository userRepository;
+    @Inject
+    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((MyApplication) getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
-
-        userRepository = UserRepository.getInstance(DaggerAdminModuleComponent.create().adminService(), TokenPersister.getInstance(getApplicationContext()));
 
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.submit.setOnClickListener(v -> {
-
-            UserRequest request = new UserRequest();
-            request.setEmail(binding.email.getText().toString());
-            request.setFirstName(binding.firstname.getText().toString());
-            request.setLastName(binding.lastname.getText().toString());
-            request.setPassword(binding.password.getText().toString());
-            request.setUsername(binding.username.getText().toString());
-
+            UserRequest request = UserRequest.fromActivityRegisterBinding(binding);
             userRepository.register(request, result -> {
                 String text;
                 if (result instanceof Result.Success) {
@@ -44,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     text = ((Result.Error) result).getError().getLocalizedMessage();
                 }
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-
                 Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             });
 

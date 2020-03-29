@@ -6,7 +6,8 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.data.Token;
-import mihaic.com.example.house_tasks_admin.ui.register.User;
+import mihaic.com.example.house_tasks_admin.network.users.dto.User;
+import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Header;

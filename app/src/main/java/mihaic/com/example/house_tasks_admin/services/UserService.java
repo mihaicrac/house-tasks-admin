@@ -8,10 +8,10 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.data.Token;
-import mihaic.com.example.house_tasks_admin.network.users.LoginRequest;
+import mihaic.com.example.house_tasks_admin.network.users.dto.LoginRequest;
 import mihaic.com.example.house_tasks_admin.network.users.UserClient;
-import mihaic.com.example.house_tasks_admin.network.users.UserRequest;
-import mihaic.com.example.house_tasks_admin.ui.register.User;
+import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
+import mihaic.com.example.house_tasks_admin.network.users.dto.User;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -29,7 +29,6 @@ public class UserService {
     UserService(UserClient userClient) {
         this.userClient = userClient;
         this.credentials = Credentials.basic(user, password);
-
     }
 
     public Single<User> registerUser(UserRequest userRequest) {
