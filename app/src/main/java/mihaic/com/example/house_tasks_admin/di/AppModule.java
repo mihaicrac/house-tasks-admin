@@ -11,6 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.network.MockInterceptor;
+import mihaic.com.example.house_tasks_admin.network.groups.GroupClient;
 import mihaic.com.example.house_tasks_admin.network.users.UserClient;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -34,17 +35,27 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static UserClient providesUserClient() {
+    public Retrofit providesRetrofit(MockInterceptor mockInterceptor) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(new OkHttpClient.Builder().addInterceptor(new MockInterceptor())
+        return new Retrofit.Builder()
+                .client(new OkHttpClient.Builder().addInterceptor(mockInterceptor)
                         .build())
-                .baseUrl("http://192.168.100.5:8084/")
+                .baseUrl("http://192.168.100.19:8084/")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
+    }
 
+    @Provides
+    @Singleton
+    public UserClient providesUserClient(Retrofit retrofit) {
         return retrofit.create(UserClient.class);
+    }
+
+    @Provides
+    @Singleton
+    public GroupClient providesGroupClient(Retrofit retrofit) {
+        return retrofit.create(GroupClient.class);
     }
 }

@@ -23,14 +23,12 @@ import mihaic.com.example.house_tasks_admin.services.UserService;
 
 @Singleton
 public class UserRepository {
-
-    private UserService dataSource;
+    private UserService userService;
     private TokenStoreService tokenStoreService;
-    private Token token;
 
     @Inject
-    public UserRepository(UserService dataSource, TokenStoreService tokenStoreService) {
-        this.dataSource = dataSource;
+    public UserRepository(UserService userService, TokenStoreService tokenStoreService) {
+        this.userService = userService;
         this.tokenStoreService = tokenStoreService;
     }
 
@@ -38,48 +36,42 @@ public class UserRepository {
         return tokenStoreService.getToken() != null;
     }
 
-    public Token getToken() {
-        if (token == null) {
-            this.token = tokenStoreService.getToken();
-        }
-        return this.token;
-    }
-
     private void saveToken(Token token) {
-        this.token = token;
         tokenStoreService.save(token);
     }
 
     public void logout() {
-        token = null;
-        tokenStoreService.save(new Token());
+        tokenStoreService.removeToken();
     }
 
     public Disposable login(String username, String password, Consumer<Result> callback) {
-        Disposable disposable = dataSource.loginUser(new LoginRequest(username, password))
+        Disposable disposable = userService.loginUser(new LoginRequest(username, password))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             saveToken(result);
                             callback.accept(new Result.Success(result));
+                        },
+                        error -> {
+
                         }
+
                 );
         return disposable;
     }
 
-    public Disposable register(UserRequest userRequest, Consumer<Result> callback) {
+    public Disposable register(UserRequest userRequest, Consumer<Result.Success<Token>> onNext, io.reactivex.functions.Consumer<? super Throwable> onError) {
         LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());
-        Disposable disposable = Observable.merge(
-                dataSource.registerUser(userRequest).toObservable(),
-                dataSource.loginUser(loginRequest).toObservable())
+        Disposable disposable = Observable.concat(
+                userService.registerUser(userRequest).toObservable(),
+                userService.loginUser(loginRequest).toObservable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(result -> {
                     if (result instanceof Token) {
                         saveToken((Token) result);
-                    } else {
-                        callback.accept(new Result.Success(result));
+                        onNext.accept(new Result.Success(result));
                     }
-                });
+                }, onError);
         return disposable;
     }
 

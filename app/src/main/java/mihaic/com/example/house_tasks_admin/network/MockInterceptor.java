@@ -1,15 +1,27 @@
 package mihaic.com.example.house_tasks_admin.network;
 
+import java.io.IOException;
+
+import javax.inject.Inject;
+
 import mihaic.com.example.house_tasks_admin.BuildConfig;
+import mihaic.com.example.house_tasks_admin.data.Token;
+import mihaic.com.example.house_tasks_admin.services.TokenStoreService;
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Protocol;
+import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class MockInterceptor implements Interceptor {
 
-    public Response intercept(Interceptor.Chain chain) {
+    private TokenStoreService tokenStoreService;
+
+    @Inject
+    public MockInterceptor(TokenStoreService tokenStoreService) {
+        this.tokenStoreService = tokenStoreService;
+    }
+
+
+    public Response intercept(Interceptor.Chain chain) throws IOException {
         if (BuildConfig.DEBUG) {
             String uri = chain.request().url().uri().toString();
             String responseString = "{}";
@@ -28,19 +40,34 @@ public class MockInterceptor implements Interceptor {
                         "}";
             }
 
-            return new Response.Builder().code(200)
-                    .protocol(Protocol.HTTP_2)
-                    .message(responseString)
-                    .body(ResponseBody.create(MediaType.parse("application/json"),
-                            responseString.getBytes()))
-                    .addHeader("content-type", "application/json")
-                    .request(chain.request())
-                    .build();
+
+//            return new Response.Builder().code(200)
+//                    .protocol(Protocol.HTTP_2)
+//                    .message(responseString)
+//                    .body(ResponseBody.create(MediaType.parse("application/json"),
+//                            responseString.getBytes()))
+//                    .addHeader("content-type", "application/json")
+//                    .request(chain.request())
+//                    .build();
+            Request.Builder builder = chain.request().newBuilder();
+            if (!uri.endsWith("oauth/token") && !uri.endsWith("users")) {
+                addBearerHeader(builder);
+            }
+            Request request = builder.build();
+            return chain.proceed(request);
         } else {
             //just to be on safe side.
             throw new IllegalAccessError("MockInterceptor is only meant for Testing Purposes and " +
                     "bound to be used only with DEBUG mode");
         }
+    }
+
+    private Request.Builder addBearerHeader(Request.Builder builder) {
+        Token token = tokenStoreService.getToken();
+        if (token != null) {
+            builder.addHeader("Authorization", "Bearer " + token.getAccessToken());
+        }
+        return builder;
     }
 
 }

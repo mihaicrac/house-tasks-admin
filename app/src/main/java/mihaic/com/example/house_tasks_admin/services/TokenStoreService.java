@@ -11,6 +11,7 @@ import mihaic.com.example.house_tasks_admin.data.Token;
 @Singleton
 public class TokenStoreService {
     private SharedPreferences sharedPref;
+    private Token token;
 
     @Inject
     public TokenStoreService(Context context) {
@@ -25,14 +26,24 @@ public class TokenStoreService {
     }
 
     public Token getToken() {
+        if (token == null) {
+            this.token = getTokenFromFileSystem();
+        }
+        return this.token;
+    }
+
+    public void removeToken() {
+        token = null;
+        save(new Token());
+    }
+
+    private Token getTokenFromFileSystem() {
         Token token = null;
         String accessToken = sharedPref.getString("access_token", null);
-        String refresh_token = sharedPref.getString("refresh_token", null);
+        String refreshToken = sharedPref.getString("refresh_token", null);
 
-        if (accessToken != null && refresh_token != null) {
-            token = new Token();
-            token.setAccessToken(accessToken);
-            token.setAccessToken(refresh_token);
+        if (accessToken != null && refreshToken != null) {
+            token = new Token(accessToken, refreshToken);
         }
 
         return token;
