@@ -9,7 +9,14 @@
         android:id="@+id/nav_home"
         android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_usersAndRulesFragment"
+            app:destination="@id/usersAndRulesFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_gallery"
+            app:destination="@id/nav_gallery" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -40,4 +47,28 @@
         android:name="mihaic.com.example.house_tasks_admin.ui.admin.send.SendFragment"
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
+    <fragment
+        android:id="@+id/usersAndRulesFragment"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview.UsersAndRulesFragment"
+        android:label="UsersAndRulesFragment" >
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_usersAndRulesFragment_to_rulesItemsFragment2"
+            app:destination="@id/rulesItemsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rulesItemsFragment"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.rule_items.RulesItemsFragment"
+        android:label="RulesItemsFragment" >
+        <argument
+            android:name="ruleName"
+            app:argType="string" />
+        <argument
+            android:name="ruleId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

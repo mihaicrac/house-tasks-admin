@@ -27,6 +27,7 @@ import mihaic.com.example.house_tasks_admin.ui.login.LoginActivity;
 public class AdminActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private NavController navController;
 
     @Inject
     UserRepository userRepository;
@@ -56,7 +57,7 @@ public class AdminActivity extends AppCompatActivity {
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send, R.id.logout)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(v -> {
             userRepository.logout();

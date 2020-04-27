@@ -11,7 +11,7 @@ import mihaic.com.example.house_tasks_admin.data.Token;
 import mihaic.com.example.house_tasks_admin.network.users.dto.LoginRequest;
 import mihaic.com.example.house_tasks_admin.network.users.UserClient;
 import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
-import mihaic.com.example.house_tasks_admin.network.users.dto.User;
+import mihaic.com.example.house_tasks_admin.data.users.User;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;

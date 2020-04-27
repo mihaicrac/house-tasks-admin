@@ -6,17 +6,25 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.data.Group;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import mihaic.com.example.house_tasks_admin.data.users.User;
+import retrofit2.http.*;
 
 @Singleton
 public interface GroupClient {
 
-    @GET("groups")
+    @GET("authentication/groups")
     Single<List<Group>> getGroups();
 
-    @POST("groups")
+    @POST("authentication/groups")
     Single<Group> addGroup(@Body Group group);
+
+    @GET("authentication/groups/{id}/users")
+    Single<List<User>> getUsers(@Path("id") String groupId);
+
+    @GET("authentication/groups")
+    Single<List<Group>> getGroups(@Query("name") String name);
+
+    @POST("authentication/groups/{id}/user")
+    Single<Void> joinGroup(@Path("id") String groupId);
 
 }

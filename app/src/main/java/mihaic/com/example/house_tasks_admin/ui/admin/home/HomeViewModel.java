@@ -33,7 +33,11 @@ public class HomeViewModel extends ViewModel {
 
     public void addGroup(Group group) {
         groupsRepository.addGroup(group,
-                g -> groupList.getValue().add(g)
+                g -> {
+                    List<Group> list = groupList.getValue();
+                    list.add(g);
+                    groupList.setValue(new ArrayList<>(list));
+                }
                 , error -> System.out.println("error" + error.getLocalizedMessage())
         );
     }

@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.network.users.dto;
+package mihaic.com.example.house_tasks_admin.data.users;
 
 import java.util.UUID;
 

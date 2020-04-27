@@ -50,7 +50,7 @@ public class MockInterceptor implements Interceptor {
 //                    .request(chain.request())
 //                    .build();
             Request.Builder builder = chain.request().newBuilder();
-            if (!uri.endsWith("oauth/token") && !uri.endsWith("users")) {
+            if (!uri.endsWith(":8084/oauth/token") && !uri.endsWith(":8084/users")) {
                 addBearerHeader(builder);
             }
             Request request = builder.build();

@@ -1,17 +1,17 @@
 package mihaic.com.example.house_tasks_admin.ui.admin.home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -30,13 +30,27 @@ public class HomeFragment extends Fragment {
         final ListView groupsView = root.findViewById(R.id.listview);
         homeViewModel.getGroups();
         homeViewModel.getGroupList().observe(getViewLifecycleOwner(), list -> {
-                    List<String> groups = list.stream().map(g ->
-                            g.getId() + ":" + g.getName()).collect(Collectors.toList());
-                    ArrayAdapter<List<String>> arrayAdapter = new ArrayAdapter(getContext(), R.layout.group_list_item, groups);
-                    groupsView.setAdapter(arrayAdapter);
+                    GroupListAdapter groupListAdapter = new GroupListAdapter(getActivity(), container, R.layout.fragment_home, list, null, false);
+                    groupsView.setAdapter(groupListAdapter);
+
                 }
         );
-        homeViewModel.addGroup(new Group(null, "Group"+Math.random()));
+
+        final TextView addGroupText = root.findViewById(R.id.add_group_text);
+
+        root.findViewById(R.id.add_group_button).setOnClickListener(v -> {
+            Group g = new Group(null, addGroupText.getText().toString());
+            homeViewModel.addGroup(g);
+            hideKeyboardFrom(getContext(), root);
+        });
+
+        root.setOnClickListener(v -> hideKeyboardFrom(getContext(), root));
+
         return root;
+    }
+
+    private void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

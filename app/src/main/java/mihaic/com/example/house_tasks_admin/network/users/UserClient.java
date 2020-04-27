@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import mihaic.com.example.house_tasks_admin.data.Token;
-import mihaic.com.example.house_tasks_admin.network.users.dto.User;
+import mihaic.com.example.house_tasks_admin.data.users.User;
 import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -17,11 +17,11 @@ import retrofit2.http.PartMap;
 
 @Singleton
 public interface UserClient {
-    @POST("users")
+    @POST("authentication/users")
     Single<User> registerUser(@Body UserRequest userRequest);
 
     @Multipart
-    @POST("oauth/token")
+    @POST("authentication/oauth/token")
     Single<Token> loginUser(@Header("Authorization") String header, @PartMap Map<String, RequestBody> parameters);
 
 }

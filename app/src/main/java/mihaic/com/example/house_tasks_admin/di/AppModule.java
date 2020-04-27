@@ -12,6 +12,7 @@ import dagger.Provides;
 import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.network.MockInterceptor;
 import mihaic.com.example.house_tasks_admin.network.groups.GroupClient;
+import mihaic.com.example.house_tasks_admin.network.taskrules.TaskRulesClient;
 import mihaic.com.example.house_tasks_admin.network.users.UserClient;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -41,7 +42,7 @@ public class AppModule {
         return new Retrofit.Builder()
                 .client(new OkHttpClient.Builder().addInterceptor(mockInterceptor)
                         .build())
-                .baseUrl("http://192.168.100.19:8084/")
+                .baseUrl("http://192.168.100.19:5555/api/")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
@@ -57,5 +58,11 @@ public class AppModule {
     @Singleton
     public GroupClient providesGroupClient(Retrofit retrofit) {
         return retrofit.create(GroupClient.class);
+    }
+
+    @Provides
+    @Singleton
+    public TaskRulesClient providesTaskRulesClient(Retrofit retrofit) {
+        return retrofit.create(TaskRulesClient.class);
     }
 }

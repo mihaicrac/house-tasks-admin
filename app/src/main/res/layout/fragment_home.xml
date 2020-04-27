@@ -14,12 +14,24 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/add_group_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="group name"
+        app:layout_constraintBottom_toBottomOf="@+id/add_group_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/add_group_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add group"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_group_text"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
