@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home.rule_items;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups.rule_items;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.users.User;
 import mihaic.com.example.house_tasks_admin.network.taskrules.dto.RuleDto;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview.GroupModel;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview.GroupModel;
 
 public class RulesItemsFragment extends Fragment {
 

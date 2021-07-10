@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_groups">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.HomeFragment"
+        android:id="@+id/nav_groups"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.groups.GroupsFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_usersAndRulesFragment"
-            app:destination="@id/usersAndRulesFragment" />
+            app:destination="@id/nav_users_rules" />
         <action
-            android:id="@+id/action_nav_home_to_nav_gallery"
-            app:destination="@id/nav_gallery" />
+            android:id="@+id/action_nav_groups_to_nav_groupsearch"
+            app:destination="@id/nav_group_search" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="mihaic.com.example.house_tasks_admin.ui.admin.gallery.GalleryFragment"
+        android:id="@+id/nav_group_search"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.groupsearch.GroupSearchFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="mihaic.com.example.house_tasks_admin.ui.admin.slideshow.SlideshowFragment"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.rulesfeed.RulesFeedFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
@@ -48,8 +48,8 @@
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
     <fragment
-        android:id="@+id/usersAndRulesFragment"
-        android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview.UsersAndRulesFragment"
+        android:id="@+id/nav_users_rules"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview.UsersAndRulesFragment"
         android:label="UsersAndRulesFragment" >
         <argument
             android:name="groupId"
@@ -57,11 +57,11 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_usersAndRulesFragment_to_rulesItemsFragment2"
-            app:destination="@id/rulesItemsFragment" />
+            app:destination="@id/nav_rules_items" />
     </fragment>
     <fragment
-        android:id="@+id/rulesItemsFragment"
-        android:name="mihaic.com.example.house_tasks_admin.ui.admin.home.rule_items.RulesItemsFragment"
+        android:id="@+id/nav_rules_items"
+        android:name="mihaic.com.example.house_tasks_admin.ui.admin.groups.rule_items.RulesItemsFragment"
         android:label="RulesItemsFragment" >
         <argument
             android:name="ruleName"

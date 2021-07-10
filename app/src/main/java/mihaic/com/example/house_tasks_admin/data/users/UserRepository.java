@@ -1,5 +1,6 @@
 package mihaic.com.example.house_tasks_admin.data.users;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -11,6 +12,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import mihaic.com.example.house_tasks_admin.data.Result;
 import mihaic.com.example.house_tasks_admin.data.Token;
+import mihaic.com.example.house_tasks_admin.network.notifications.NotificationsClient;
+import mihaic.com.example.house_tasks_admin.network.notifications.dto.RegisterTokenDto;
 import mihaic.com.example.house_tasks_admin.network.users.dto.LoginRequest;
 import mihaic.com.example.house_tasks_admin.network.users.dto.UserRequest;
 import mihaic.com.example.house_tasks_admin.services.TokenStoreService;
@@ -25,11 +28,13 @@ import mihaic.com.example.house_tasks_admin.services.UserService;
 public class UserRepository {
     private UserService userService;
     private TokenStoreService tokenStoreService;
+    private NotificationsClient notificationsClient;
 
     @Inject
-    public UserRepository(UserService userService, TokenStoreService tokenStoreService) {
+    public UserRepository(UserService userService, TokenStoreService tokenStoreService, NotificationsClient notificationsClient) {
         this.userService = userService;
         this.tokenStoreService = tokenStoreService;
+        this.notificationsClient = notificationsClient;
     }
 
     public boolean isLoggedIn() {
@@ -38,6 +43,10 @@ public class UserRepository {
 
     private void saveToken(Token token) {
         tokenStoreService.save(token);
+    }
+
+    private void saveUserId(String userId) {
+        tokenStoreService.save(userId);
     }
 
     public void logout() {
@@ -70,9 +79,25 @@ public class UserRepository {
                     if (result instanceof Token) {
                         saveToken((Token) result);
                         onNext.accept(new Result.Success(result));
+                        sendFcmToken();
+                    } else {
+                        String userId = ((User) result).getId().toString();
+                        saveUserId(userId);
                     }
                 }, onError);
         return disposable;
+    }
+
+    private Disposable sendFcmToken() {
+        RegisterTokenDto registerTokenDto = new RegisterTokenDto();
+        registerTokenDto.setUserId(UUID.fromString(tokenStoreService.getUserId()));
+        registerTokenDto.setToken(tokenStoreService.getFcmToken());
+        return notificationsClient.registerToken(registerTokenDto).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(res -> {
+                    System.out.println(":))))))))))))))))");
+                        }, error ->
+                                System.out.println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,," + error.getLocalizedMessage())
+                );
     }
 
 }

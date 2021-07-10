@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

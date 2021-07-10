@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home.rules;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups.rules;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

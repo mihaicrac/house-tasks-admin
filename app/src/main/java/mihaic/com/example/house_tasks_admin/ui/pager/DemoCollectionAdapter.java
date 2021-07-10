@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview.GroupModel;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.rules.RulesFragment;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.users.UsersFragment;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview.GroupModel;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.rules.RulesFragment;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.users.UsersFragment;
 
 public class DemoCollectionAdapter extends FragmentStateAdapter {
     private GroupModel groupModel;

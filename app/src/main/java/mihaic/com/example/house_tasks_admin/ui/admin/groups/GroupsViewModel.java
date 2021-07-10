@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,12 +11,12 @@ import javax.inject.Inject;
 import mihaic.com.example.house_tasks_admin.data.Group;
 import mihaic.com.example.house_tasks_admin.data.GroupsRepository;
 
-public class HomeViewModel extends ViewModel {
+public class GroupsViewModel extends ViewModel {
     private GroupsRepository groupsRepository;
     private final MutableLiveData<List<Group>> groupList;
 
     @Inject
-    public HomeViewModel(GroupsRepository groupsRepository) {
+    public GroupsViewModel(GroupsRepository groupsRepository) {
         this.groupsRepository = groupsRepository;
         groupList = new MutableLiveData<>();
         groupList.setValue(new ArrayList<>());

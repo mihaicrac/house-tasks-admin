@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,8 +15,8 @@ import mihaic.com.example.house_tasks_admin.data.Rule;
 import mihaic.com.example.house_tasks_admin.data.TaskRulesRepository;
 import mihaic.com.example.house_tasks_admin.data.users.User;
 import mihaic.com.example.house_tasks_admin.network.taskrules.dto.RuleDto;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.rules.RulesProvider;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.users.UsersProvider;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.rules.RulesProvider;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.users.UsersProvider;
 
 @Singleton
 public class GroupModel extends ViewModel implements RulesProvider, UsersProvider {
@@ -53,7 +53,7 @@ public class GroupModel extends ViewModel implements RulesProvider, UsersProvide
     }
 
     public void getRules(String groupId) {
-        taskRulesRepository.getRules(groupId, list -> ruleList.setValue(list),
+        taskRulesRepository.getRulesByGroupId(groupId, list -> ruleList.setValue(list),
                 error -> {
                     System.out.println(error);
                 });

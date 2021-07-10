@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.gallery;
+package mihaic.com.example.house_tasks_admin.ui.admin.groupsearch;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +15,9 @@ import javax.inject.Inject;
 import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.GroupsRepository;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.GroupListAdapter;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.GroupListAdapter;
 
-public class GalleryFragment extends Fragment {
+public class GroupSearchFragment extends Fragment {
 
     @Inject
     GroupsRepository groupsRepository;

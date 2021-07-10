@@ -28,8 +28,8 @@ public class TaskRulesRepository {
         return disposable;
     }
 
-    public Disposable getRules(String groupId, io.reactivex.functions.Consumer<List<Rule>> onNext, io.reactivex.functions.Consumer<Throwable> onError) {
-        Disposable disposable = client.getRules(groupId)
+    public Disposable getRulesByGroupId(String groupId, io.reactivex.functions.Consumer<List<Rule>> onNext, io.reactivex.functions.Consumer<Throwable> onError) {
+        Disposable disposable = client.getRulesByGroupId(groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);

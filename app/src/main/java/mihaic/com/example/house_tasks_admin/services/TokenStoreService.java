@@ -12,6 +12,7 @@ import mihaic.com.example.house_tasks_admin.data.Token;
 public class TokenStoreService {
     private SharedPreferences sharedPref;
     private Token token;
+    private String userId;
 
     @Inject
     public TokenStoreService(Context context) {
@@ -22,7 +23,19 @@ public class TokenStoreService {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("access_token", token.getAccessToken());
         editor.putString("refresh_token", token.getRefreshToken());
-        editor.commit();
+        editor.apply();
+    }
+
+    public void save(String userId) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("user_id", userId);
+        editor.apply();
+    }
+
+    public void saveFcmToken(String token) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("fcm_token", token);
+        editor.apply();
     }
 
     public Token getToken() {
@@ -32,9 +45,22 @@ public class TokenStoreService {
         return this.token;
     }
 
+    public String getUserId() {
+        if (userId == null) {
+            this.userId = sharedPref.getString("user_id", null);
+        }
+        return this.userId;
+    }
+
+    public String getFcmToken() {
+        return sharedPref.getString("fcm_token", null);
+    }
+
     public void removeToken() {
         token = null;
+        userId = null;
         save(new Token());
+        save("");
     }
 
     private Token getTokenFromFileSystem() {

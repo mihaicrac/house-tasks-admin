@@ -12,6 +12,8 @@ public class Rule {
 
     private String name;
 
+    private UUID groupId;
+
     private List<RuleItem> orderRuleItems;
 
     private int offset;

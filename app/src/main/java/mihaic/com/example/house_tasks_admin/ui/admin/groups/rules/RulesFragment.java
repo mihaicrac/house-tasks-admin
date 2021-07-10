@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home.rules;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups.rules;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.Rule;
-import mihaic.com.example.house_tasks_admin.ui.admin.home.groupoverview.UsersAndRulesFragmentDirections;
+import mihaic.com.example.house_tasks_admin.ui.admin.groups.groupoverview.UsersAndRulesFragmentDirections;
 
 public class RulesFragment extends Fragment {
     private RulesProvider rulesProvider;

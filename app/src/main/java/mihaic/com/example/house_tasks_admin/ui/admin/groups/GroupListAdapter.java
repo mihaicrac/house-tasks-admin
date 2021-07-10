@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -58,7 +58,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
         details.setVisibility(View.VISIBLE);
 
         rowView.findViewById(R.id.details).setOnClickListener(v -> {
-            NavDirections action = HomeFragmentDirections.actionNavHomeToUsersAndRulesFragment(group.getId().toString());
+            NavDirections action = GroupsFragmentDirections.actionNavHomeToUsersAndRulesFragment(group.getId().toString());
             Navigation.findNavController(container).navigate(action);
         });
     }

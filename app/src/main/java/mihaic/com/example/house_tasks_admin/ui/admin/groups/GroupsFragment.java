@@ -1,4 +1,4 @@
-package mihaic.com.example.house_tasks_admin.ui.admin.home;
+package mihaic.com.example.house_tasks_admin.ui.admin.groups;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,23 +13,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.R;
 import mihaic.com.example.house_tasks_admin.data.Group;
 
-public class HomeFragment extends Fragment {
+public class GroupsFragment extends Fragment {
     @Inject
-    HomeViewModel homeViewModel;
+    GroupsViewModel groupsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ((MyApplication) getActivity().getApplicationContext()).getAppComponent().inject(this);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final ListView groupsView = root.findViewById(R.id.listview);
-        homeViewModel.getGroups();
-        homeViewModel.getGroupList().observe(getViewLifecycleOwner(), list -> {
+        groupsViewModel.getGroups();
+        groupsViewModel.getGroupList().observe(getViewLifecycleOwner(), list -> {
                     GroupListAdapter groupListAdapter = new GroupListAdapter(getActivity(), container, R.layout.fragment_home, list, null, false);
                     groupsView.setAdapter(groupListAdapter);
 
@@ -39,8 +41,8 @@ public class HomeFragment extends Fragment {
         final TextView addGroupText = root.findViewById(R.id.add_group_text);
 
         root.findViewById(R.id.add_group_button).setOnClickListener(v -> {
-            Group g = new Group(null, addGroupText.getText().toString());
-            homeViewModel.addGroup(g);
+            Group g = new Group(null, addGroupText.getText().toString(), new ArrayList<>());
+            groupsViewModel.addGroup(g);
             hideKeyboardFrom(getContext(), root);
         });
 

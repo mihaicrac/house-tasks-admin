@@ -12,6 +12,7 @@ import dagger.Provides;
 import mihaic.com.example.house_tasks_admin.MyApplication;
 import mihaic.com.example.house_tasks_admin.network.MockInterceptor;
 import mihaic.com.example.house_tasks_admin.network.groups.GroupClient;
+import mihaic.com.example.house_tasks_admin.network.notifications.NotificationsClient;
 import mihaic.com.example.house_tasks_admin.network.taskrules.TaskRulesClient;
 import mihaic.com.example.house_tasks_admin.network.users.UserClient;
 import okhttp3.OkHttpClient;
@@ -64,5 +65,11 @@ public class AppModule {
     @Singleton
     public TaskRulesClient providesTaskRulesClient(Retrofit retrofit) {
         return retrofit.create(TaskRulesClient.class);
+    }
+
+    @Provides
+    @Singleton
+    public NotificationsClient providesNotificationClient(Retrofit retrofit) {
+        return retrofit.create(NotificationsClient.class);
     }
 }
